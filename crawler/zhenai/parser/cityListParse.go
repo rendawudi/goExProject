@@ -14,7 +14,7 @@ func GetCityList(bytes []byte) engine.ParserResult {
 		results.Requests = append(
 			results.Requests, engine.Request{
 				Url:        string(m[1]),
-				ParserFunc: GetUserMsg,
+				ParserFunc: GetUserListMsg,
 			})
 	}
 	return results

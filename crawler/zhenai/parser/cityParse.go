@@ -5,7 +5,7 @@ import (
 	"regexp"
 )
 
-func GetUserMsg(bytes []byte) engine.ParserResult {
+func GetUserListMsg(bytes []byte) engine.ParserResult {
 	re := regexp.MustCompile(`<a href="(http://album.zhenai.com/u/[0-9]+)"[^>]*>([^<]+)</a>`)
 	matchs := re.FindAllSubmatch(bytes, -1)
 	var results engine.ParserResult
@@ -13,8 +13,10 @@ func GetUserMsg(bytes []byte) engine.ParserResult {
 		results.Items = append(results.Items, string(m[2]))
 		results.Requests = append(
 			results.Requests, engine.Request{
-				Url:        string(m[1]),
-				ParserFunc: engine.NilParseFunc,
+				Url: string(m[1]),
+				ParserFunc: func(bytes []byte) engine.ParserResult {
+					return GetUserProfile(bytes, string(m[2]))
+				},
 			})
 	}
 	return results

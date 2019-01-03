@@ -14,7 +14,21 @@ import (
 )
 
 func Fetch(Url string) ([]byte, error) {
-	resp, err := http.Get(Url)
+	request, err := http.NewRequest("GET", Url, nil)
+	if err != nil {
+		return nil, err
+	}
+	request.Header.Add(
+		"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
+	request.Header.Add(
+		"Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+	request.Header.Add(
+		"Accept-Encoding", "gzip, deflate")
+	request.Header.Add(
+		"Accept-Language", "zh-CN,zh;q=0.9")
+
+	var client http.Client
+	resp, err := client.Do(request)
 	if err != nil {
 		return nil, err
 	}
